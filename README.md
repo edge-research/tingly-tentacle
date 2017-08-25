@@ -1,6 +1,6 @@
 # tingly-tentacle
 
-<img src="pics/breadboard.jpg">
+<img src="pics/breadboard_small.jpg">
 
 # pololu stepper motor
 
