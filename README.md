@@ -2,6 +2,8 @@
 
 <img src="pics/breadboard_small.jpg">
 
+<img src="pics/motor.jpg">
+
 # pololu stepper motor
 
 - 1208 Stepper Motor: Bipolar, 200 Steps/Rev, 35×28mm, 10V, 0.5 A/Phase = 12.95
