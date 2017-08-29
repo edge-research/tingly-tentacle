@@ -14,7 +14,7 @@ Datalogging temp and pressure (depth).
 - [BR MS5837 Website](http://docs.bluerobotics.com/bar30/) -- links and info.
 - [BR MS5837 Arduino Library](https://github.com/bluerobotics/BlueRobotics_MS5837_Library)
 
-# Quick Notes on Setup
+# Setup
 
 - We're going to be programming the device using the Arduino IDE, but fetching the data off using CircuitPython. This allows us to utilize the on-board SPI Flash chip, which is lower-power and (likely) more reliable than an SD card.
 
@@ -32,7 +32,7 @@ Datalogging temp and pressure (depth).
 
 - Once uploaded, double tap the 'reset' button again to enter bootloader mode.  Copy the '.UF2' file off the 'FEATHERBOOT' drive and store it.  This is your 'datalogger program', and will be needed after each time you collect data.
  
-## Collecting the data
+### Collecting the data
 
 - Double tap the 'reset' button to enter bootloader mode.
 
@@ -40,7 +40,7 @@ Datalogging temp and pressure (depth).
 
 - This will automatically reboot the board, and then mount as a 'CIRCUITPYTHON' drive. You can then drag-drop off the 'data.txt' file.
 
-## Reprogramming the board to return to datalogging
+### Reprogramming the board to return to datalogging
 
 - Double tap the 'reset' button to enter bootloader mode.
 
