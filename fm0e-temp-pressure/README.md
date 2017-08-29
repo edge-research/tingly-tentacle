@@ -47,3 +47,7 @@ Datalogging temp and pressure (depth).
 
 - Drag and drop your '.UF2' file (saved in step 1.) back onto the FEATHERBOOT drive.  This will automatically reboot the system and start running the Arduino datalogging program (may require a power cycle).
 
+# Misc Notes
+
+These sensors use 'D13' connectors for the i2c connection. Looks like matching connectors are avail on Digikey [here](https://www.digikey.com/product-detail/en/hirose-electric-co-ltd/DF13-4P-1.25DSA/H2193-ND/241767).
+
