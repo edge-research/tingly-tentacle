@@ -7,9 +7,11 @@
 #define interruptPin 6
 
 DS3231 rtc; //Create the DS3231 object
-static uint8_t prevSecond=0; 
-const int interval_sec = 5; //interval in seconds
 
+const int interval_sec = 5; //interval in seconds
+const int sleep_depth = 0; // Enable Idle0 mode - sleep CPU clock only
+//const int sleep_depth = 1; // Idle1 - sleep CPU and AHB clocks
+//const int sleep_depth=2; // Idle2 - sleep CPU, AHB, and APB clocks
 
 void setup () 
 {
@@ -31,7 +33,7 @@ void loop ()
     Blink(LED_BUILTIN,1000);
    }
    
-   fall_asleep(interval_sec);
+   fall_asleep(interval_sec,sleep_depth);
 
    for (int i=0;i<3;i++) { // indicate visually
     Blink(LED_BUILTIN,100);
@@ -60,7 +62,7 @@ void Blink(byte PIN, int DELAY_MS) {
 }
 
 
-void fall_asleep (int interval_sec) {
+void fall_asleep (int interval_sec, int sleep_depth) {
 
   rtc.clearAlarm(); //resets the alarm interrupt status on the RTC
   attachInterrupt(digitalPinToInterrupt(interruptPin), EIC_ISR, FALLING);  // Attach interrupt to pin 6 with an ISR and when the pin state CHANGEs
@@ -73,10 +75,10 @@ void fall_asleep (int interval_sec) {
 
   EIC->WAKEUP.reg |= EIC_WAKEUP_WAKEUPEN4;        // Set External Interrupt Controller to use channel 4 (pin 6)
 
-  
-  PM->SLEEP.reg |= PM_SLEEP_IDLE_CPU;  // Enable Idle0 mode - sleep CPU clock only
-  //PM->SLEEP.reg |= PM_SLEEP_IDLE_AHB; // Idle1 - sleep CPU and AHB clocks
-  //PM->SLEEP.reg |= PM_SLEEP_IDLE_APB; // Idle2 - sleep CPU, AHB, and APB clocks
+
+  if (sleep_depth==0) PM->SLEEP.reg |= PM_SLEEP_IDLE_CPU;  // Enable Idle0 mode - sleep CPU clock only
+  if (sleep_depth==1) PM->SLEEP.reg |= PM_SLEEP_IDLE_AHB; // Idle1 - sleep CPU and AHB clocks
+  if (sleep_depth==2) PM->SLEEP.reg |= PM_SLEEP_IDLE_APB; // Idle2 - sleep CPU, AHB, and APB clocks
 
   // It is either Idle mode or Standby mode, not both. 
   SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;   // Enable Standby or "deep sleep" mode
