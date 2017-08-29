@@ -1,5 +1,4 @@
-//Interrupts for Battery management/saving using MCU power down mode. /INT from DS3231 is connected to INT0 of MCU.
-
+//Interrupts for Battery management/saving using MCU power down mode. /INT from DS3231 is connected to 'interrupt_pin' of MCU, and also needs a 10K pullup to VDD.
 
 #include <Wire.h>
 #include "DS3231.h"
@@ -44,7 +43,7 @@ void loop ()
 } 
 
   
-//Interrupt service routine for external interrupt on INT0 pin conntected to /INT
+//Interrupt service routine for external interrupt
 void EIC_ISR()
 {
   //Keep this as short as possible. Possibly avoid using function calls
@@ -65,7 +64,7 @@ void Blink(byte PIN, int DELAY_MS) {
 void fall_asleep (int interval_sec, int sleep_depth) {
 
   rtc.clearAlarm(); //resets the alarm interrupt status on the RTC
-  attachInterrupt(digitalPinToInterrupt(interruptPin), EIC_ISR, FALLING);  // Attach interrupt to pin 6 with an ISR and when the pin state CHANGEs
+  attachInterrupt(digitalPinToInterrupt(interruptPin), EIC_ISR, FALLING);  // Attach interrupt to pin interrupt_pin with an ISR
  
   SYSCTRL->XOSC32K.reg |=  (SYSCTRL_XOSC32K_RUNSTDBY | SYSCTRL_XOSC32K_ONDEMAND); // set external 32k oscillator to run when idle or sleep mode is chosen
   REG_GCLK_CLKCTRL  |= GCLK_CLKCTRL_ID(GCM_EIC) |  // generic clock multiplexer id for the external interrupt controller
@@ -73,7 +72,7 @@ void fall_asleep (int interval_sec, int sleep_depth) {
                        GCLK_CLKCTRL_CLKEN;       // enable it
   while (GCLK->STATUS.bit.SYNCBUSY);              // write protected, wait for sync
 
-  EIC->WAKEUP.reg |= EIC_WAKEUP_WAKEUPEN4;        // Set External Interrupt Controller to use channel 4 (pin 6)
+  EIC->WAKEUP.reg |= EIC_WAKEUP_WAKEUPEN4;        // Set External Interrupt Controller to use channel 4 (interrupt_pin)
 
 
   if (sleep_depth==0) PM->SLEEP.reg |= PM_SLEEP_IDLE_CPU;  // Enable Idle0 mode - sleep CPU clock only
