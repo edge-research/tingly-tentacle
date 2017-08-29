@@ -25,7 +25,7 @@ Datalogging temp and pressure (depth).
 
 - Set up your Arduino IDE to allow for interacting with Feather M0 Express boards as per instructions here.
 
-### Initially programming the board
+### Initial programming of board for datalogging
 
 - Double tap the 'reset' button to enter bootloader mode.
  
@@ -33,7 +33,7 @@ Datalogging temp and pressure (depth).
 
 - Once uploaded, double tap the 'reset' button again to enter bootloader mode.  Copy the '.UF2' file off the 'FEATHERBOOT' drive and store it.  This is your 'datalogger program', and will be needed after each time you collect data.
  
-### Collecting the data
+### Collecting the data after datalogging
 
 - Double tap the 'reset' button to enter bootloader mode.
 
