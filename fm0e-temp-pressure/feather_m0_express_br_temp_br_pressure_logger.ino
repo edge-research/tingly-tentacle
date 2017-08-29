@@ -1,28 +1,3 @@
-// Adafruit M0 Express CircuitPython Flash Example
-// Author: Tony DiCola
-//
-// This is an example of reading and writing data from Arduino
-// to the M0 Express flash filesystem used by CircuitPython.
-// You can create, update, and read files on the CircuitPython
-// filesystem in an Arduino sketch and then later load CircuitPython
-// to interact with the same files.  This example will print out
-// the contents of boot.py and main.py (if found) and add a line 
-// to a data.txt file on CircuitPython's filesystem.
-//
-// Note before you use this sketch you must load CircuitPython
-// on your M0 Express.  This will create the filesystem and
-// initialize it, then you can load this example and read/write
-// files on the board.
-//
-// Usage:
-// - Modify the pins and type of fatfs object in the config
-//   section below if necessary (usually not necessary).
-// - Upload this sketch to your M0 express board.
-// - Open the serial monitor at 115200 baud.  You should see the
-//   example start to run and messages printed to the monitor.
-//   If you don't see anything close the serial monitor, press
-//   the board reset buttton, wait a few seconds, then open the
-//   serial monitor again.
 
 
 #define VBATPIN A7
@@ -41,9 +16,6 @@ int AlarmTime;
 
 #define SLEEP_TIME 5
 
-// Configuration of the flash chip pins and flash fatfs object.
-// You don't normally need to change these if using a Feather/Metro
-// M0 express board.
 #define FLASH_TYPE     SPIFLASHTYPE_W25Q16BV  // Flash chip type.
                                               // If you change this be
                                               // sure to change the fatfs
@@ -67,7 +39,6 @@ Adafruit_M0_Express_CircuitPython pythonfs(flash);
 #include "TSYS01.h"
 #include "MS5837.h"
 
-
 TSYS01 temp_sensor;
 MS5837 pressure_sensor;
 
@@ -78,7 +49,7 @@ void setup() {
 
    rtc.begin();
    
-    Wire.begin();
+   Wire.begin();
 
   temp_sensor.init();
 
@@ -116,12 +87,13 @@ void loop() {
 temp_sensor.read();
 pressure_sensor.read();
 
-float temp = temp_sensor.temperature();
-float pressure = pressure_sensor.pressure();
+float temp = temp_sensor.temperature(); //  Blue Robotics TSYS01 'Fast response' temp sensor
 
-float MS_temp = pressure_sensor.temperature();
+float pressure = pressure_sensor.pressure();  // Blue Robotics MS5837 'Bar30' pressure sensor
 
-float depth = pressure_sensor.depth();
+float MS_temp = pressure_sensor.temperature();  // Blue Robotics MS5837 'Bar30'temperature
+
+float depth = pressure_sensor.depth(); // Blue Robotics MS5837 'Bar30' depth estimate 
 
 
 float measuredvbat = analogRead(VBATPIN);
@@ -136,20 +108,21 @@ measuredvbat /= 1024; // convert to voltage
   File data = pythonfs.open("data.txt", FILE_WRITE);
   if (data) {
     // Write a new line to the file:
-    data.print(temp);
+    data.print(temp); //  Blue Robotics TSYS01 'Fast response' temp sensor
     data.print(",");
-    data.print(MS_temp);
+    data.print(MS_temp);  // Blue Robotics MS5837 'Bar30' temperature
     data.print(",");
-    data.print(pressure);
+    data.print(pressure);  // Blue Robotics MS5837 'Bar30' pressure sensor
     data.print(",");
-    data.println(depth);
+    data.println(depth); // Blue Robotics MS5837 'Bar30' depth estimate 
+
     
     
     data.close();
     // See the other fatfs examples like fatfs_full_usage and fatfs_datalogging
     // for more examples of interacting with files.
 
-     digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
   delay(100);                       // wait for a second
   digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
   delay(100);  
